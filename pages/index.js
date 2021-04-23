@@ -53,6 +53,7 @@ export async function getStaticProps({test =""}){
     return {
         props:{
             ...json
-        }
+        },
+        revalidate:10
     }
 }
