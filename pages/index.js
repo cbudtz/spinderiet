@@ -49,6 +49,7 @@ export default function Home(props) {
 
 export async function getStaticProps({test =""}){
     const json = await apiGet("frontpage");
+    console.log("Got static props: ")
     console.log(json)
     return {
         props:{

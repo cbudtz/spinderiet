@@ -4,7 +4,10 @@ import Cols2 from "./Cols2";
 import Fullwidth from "./Fullwidth";
 
 export default function PageContent({contents: array}){
-    if (!array?.map) {console.log(array); return <></>}
+    if (!array?.map) {
+        console.log("Couldnt render this:")
+        console.log(array)
+        ; return <></>}
     return(
         <>
             {array?.map((element,key)=>{
