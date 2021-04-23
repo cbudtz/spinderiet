@@ -18,14 +18,18 @@ export default function Home(props) {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="mr-auto">
-                      <Nav.Link href="#home">Forsiden</Nav.Link>
-                      <Nav.Link href="#link">Link</Nav.Link>
-                      <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                          <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                      <Nav.Link href="/kort">Her bor vi</Nav.Link>
+                      <Nav.Link href="/lægerne">Lægerne</Nav.Link>
+                      <Nav.Link href="/lægerne">Personale</Nav.Link>
+                      <Nav.Link href="/lægerne">Fotos</Nav.Link>
+                      <NavDropdown title="Praktisk information" id="basic-nav-dropdown">
+                          <NavDropdown.Item href="#action/3.1">Speciallæger</NavDropdown.Item>
+                          <NavDropdown.Item href="#action/3.2">Priser for patienter</NavDropdown.Item>
+                          <NavDropdown.Item href="#action/3.3">Vagtring</NavDropdown.Item>
                           <NavDropdown.Divider />
-                          <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                          <NavDropdown.Item href="#action/3.4">Øvelser og vejledninger</NavDropdown.Item>
+                          <NavDropdown.Item href="#action/3.4">Priser på attester</NavDropdown.Item>
+                          <NavDropdown.Item href="#action/3.4">Problemer med e-konsultation<br/>receptfornyelse eller tidsbestilling</NavDropdown.Item>
                       </NavDropdown>
                   </Nav>
                   <Form inline>
