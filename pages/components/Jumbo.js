@@ -8,7 +8,10 @@ import {resolveImage, useWindow} from "../api/window";
 export default function Jumbo({images, text}){
     const  [windowWidth, setWindowWidth] = useState(2000)
     useWindow(setWindowWidth);
-    const image = resolveImage(windowWidth, images[0]);
+    let image =""
+    if (images && images[0]) {
+         image = resolveImage(windowWidth, images[0]);
+    }
     return(
         <div style={{width:"100%"}}>
             <Jumbotron fluid style={{
