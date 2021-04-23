@@ -52,7 +52,7 @@ export default function Laegerne(props) {
 }
 
 export async function getStaticProps({test =""}){
-    const json = await apiGet("frontpage");
+    const json = await apiGet("laegerne");
     console.log("Got static props: ")
     console.log(json)
     return {
