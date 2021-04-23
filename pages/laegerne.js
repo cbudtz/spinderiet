@@ -21,15 +21,15 @@ export default function Laegerne(props) {
                       <Nav.Link href="/kort">Her bor vi</Nav.Link>
                       <Nav.Link href="/laegerne">Lægerne</Nav.Link>
                       <Nav.Link href="/personale">Personale</Nav.Link>
-                      <Nav.Link href="/Fotos">Fotos</Nav.Link>
+                      <Nav.Link href="/fotos">Fotos</Nav.Link>
                       <NavDropdown title="Praktisk information" id="basic-nav-dropdown">
-                          <NavDropdown.Item href="Speciallæger">Speciallæger</NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.2">Priser for patienter</NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.3">Vagtring</NavDropdown.Item>
+                          <NavDropdown.Item href="speciallæger">Speciallæger</NavDropdown.Item>
+                          <NavDropdown.Item href="priserpatient">Priser for patienter</NavDropdown.Item>
+                          <NavDropdown.Item href="vagtring">Vagtring</NavDropdown.Item>
                           <NavDropdown.Divider />
-                          <NavDropdown.Item href="#action/3.5">Øvelser og vejledninger</NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.6">Priser på attester</NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.7">Problemer med e-konsultation<br/>receptfornyelse eller tidsbestilling</NavDropdown.Item>
+                          <NavDropdown.Item href="oevelser">Øvelser og vejledninger</NavDropdown.Item>
+                          <NavDropdown.Item href="attester">Priser på attester</NavDropdown.Item>
+                          <NavDropdown.Item href="problemer">Problemer med e-konsultation<br/>receptfornyelse eller tidsbestilling</NavDropdown.Item>
                       </NavDropdown>
                   </Nav>
                   <Form inline>
