@@ -11,6 +11,8 @@ export default function Jumbo({images, text}){
     let image =""
     if (images && images[0]) {
          image = resolveImage(windowWidth, images[0]);
+    } else {
+        return <></>
     }
     return(
         <div style={{width:"100%"}}>
