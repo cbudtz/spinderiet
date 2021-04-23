@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {apiGet, BASE_URL} from "./api/api";
+import {apiGet, apiGetStaticProps, BASE_URL} from "./api/api";
 import {Button, Container, Form, FormControl, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import MarkDown from "./components/MarkDown";
 import PageContent from "./components/PageContent";
@@ -52,13 +52,5 @@ export default function Laegerne(props) {
 }
 
 export async function getStaticProps({test =""}){
-    const json = await apiGet("laegerne");
-    console.log("Got static props: ")
-    console.log(json)
-    return {
-        props:{
-            ...json
-        },
-        revalidate:10
-    }
+    return apiGetStaticProps("laegerne")
 }
