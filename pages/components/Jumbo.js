@@ -17,7 +17,7 @@ export default function Jumbo({images, text}){
     return(
 
             <Jumbotron fluid style={{
-                width:"100%", paddingBottom:"60%",
+                width:"100%", paddingBottom: windowWidth>800? "40%" :"60%",
                 backgroundImage: "url('"+ getStrapiMedia(image)+ "')",
                 backgroundRepeat: "space",
                 backgroundPosition: "center",
