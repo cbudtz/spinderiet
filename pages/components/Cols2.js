@@ -30,11 +30,11 @@ export default function Cols2({element}){
         return <Container>
             <Row>
                 <Col xl={element?.big === "left" ? 8 : 4} lg={6} style={colStyle}>
-                    {element.lefttitle && <h4>{element.lefttitle}</h4>}
+                    {element?.lefttitle && <h4>{element?.lefttitle}</h4>}
                     <MarkDown>{element?.left}</MarkDown>
                 </Col>
                 <Col xl={element?.left ? 4 : 8} lg={6} style={colStyle}>
-                    {element.righttitle && <h4>{element.righttitle}</h4>}
+                    {element?.righttitle && <h4>{element?.righttitle}</h4>}
                     <MarkDown style={{maxWidth: "100%"}}>{element?.right}</MarkDown>
                 </Col>
             </Row>
