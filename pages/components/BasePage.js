@@ -13,9 +13,8 @@ export default function BasePage({title,content}){
 
         <main>
             <TopBar/>
-            <Container>
+
                 <PageContent contents={content}/>
-            </Container>
         </main>
 
 
