@@ -8,20 +8,20 @@ export default function Cols2({element}){
     const  [windowWidth, setWindowWidth] = useState(2000)
     const [activeTab,setActiveTab] = useState("left")
     useWindow(setWindowWidth);
-    if (windowWidth<992 && element.lefttitle && element.righttitle) {
+    if (windowWidth<992 && element?.lefttitle && element?.righttitle) {
         return (<Container>
             <Nav variant="tabs" defaultActiveKey="left" onSelect={(eventKey)=>setActiveTab(eventKey)}>
                 <Nav.Item>
-                    <Nav.Link eventKey="left" active={activeTab==="left"}><h5>{element.lefttitle}</h5></Nav.Link>
+                    <Nav.Link eventKey="left" active={activeTab==="left"}><h5>{element?.lefttitle}</h5></Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link eventKey="right" active={activeTab==="right"}><h5>{element.righttitle}</h5></Nav.Link>
+                    <Nav.Link eventKey="right" active={activeTab==="right"}><h5>{element?.righttitle}</h5></Nav.Link>
                 </Nav.Item>
             </Nav>
             <Row>
                 <Col style={colStyle}>
-                    {activeTab==="left" && <MarkDown>{element.left}</MarkDown>}
-                    {activeTab==="right" && <MarkDown>{element.right}</MarkDown>}
+                    {activeTab==="left" && <MarkDown>{element?.left}</MarkDown>}
+                    {activeTab==="right" && <MarkDown>{element?.right}</MarkDown>}
 
                 </Col>
             </Row>
