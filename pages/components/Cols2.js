@@ -3,12 +3,13 @@ import MarkDown from "./MarkDown";
 import React from "react";
 
 export default function Cols2({element}){
+    const colStyle = {overflowWrap:"break-word"}
     return <Container>
         <Row>
-            <Col sm={element?.big ==="left"? 8:4} >
-                <MarkDown>{element?.left}</MarkDown>
+            <Col xl={element?.big ==="left"? 8:4} lg={6}style={colStyle}>
+                <MarkDown >{element?.left}</MarkDown>
             </Col>
-            <Col sm={element?.left? 4:8} >
+            <Col xl={element?.left? 4:8} lg={6} style={colStyle}>
                 <MarkDown style={{maxWidth:"100%"}}>{element?.right}</MarkDown>
             </Col>
         </Row>

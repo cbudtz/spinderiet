@@ -23,7 +23,7 @@ export default function MarkDown({children}) {
         }
     };
     return(
-        <ReactMarkdown renderers={renderer} allowDangerousHtml>
+        <ReactMarkdown  renderers={renderer} allowDangerousHtml>
             {markdown}
         </ReactMarkdown>
     )
