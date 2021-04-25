@@ -10,21 +10,21 @@ export default function Cols2({element}){
     useWindow(setWindowWidth);
     if (windowWidth<992 && element?.lefttitle && element?.righttitle) {
         return (<Container>
-            <Nav variant="tabs" defaultActiveKey="left" onSelect={(eventKey)=>setActiveTab(eventKey)}>
-                <Nav.Item>
-                    <Nav.Link eventKey="left" active={activeTab==="left"}><h5>{element?.lefttitle}</h5></Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey="right" active={activeTab==="right"}><h5>{element?.righttitle}</h5></Nav.Link>
-                </Nav.Item>
-            </Nav>
-            <Row>
-                <Col style={colStyle}>
-                    {activeTab==="left" && <MarkDown>{element?.left}</MarkDown>}
-                    {activeTab==="right" && <MarkDown>{element?.right}</MarkDown>}
+            {/*<Nav variant="tabs" defaultActiveKey="left" onSelect={(eventKey)=>setActiveTab(eventKey)}>*/}
+            {/*    <Nav.Item>*/}
+            {/*        <Nav.Link eventKey="left" active={activeTab==="left"}><h5>{element?.lefttitle}</h5></Nav.Link>*/}
+            {/*    </Nav.Item>*/}
+            {/*    <Nav.Item>*/}
+            {/*        <Nav.Link eventKey="right" active={activeTab==="right"}><h5>{element?.righttitle}</h5></Nav.Link>*/}
+            {/*    </Nav.Item>*/}
+            {/*</Nav>*/}
+            {/*<Row>*/}
+            {/*    <Col style={colStyle}>*/}
+            {/*        {activeTab==="left" && <MarkDown>{element?.left}</MarkDown>}*/}
+            {/*        {activeTab==="right" && <MarkDown>{element?.right}</MarkDown>}*/}
 
-                </Col>
-            </Row>
+            {/*    </Col>*/}
+            {/*</Row>*/}
             </Container>)
     } else {
         return <Container>
