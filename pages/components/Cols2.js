@@ -7,7 +7,7 @@ export default function Cols2({element}){
     const colStyle = {overflowWrap:"break-word"}
     const  [windowWidth, setWindowWidth] = useState(2000)
     const [activeTab,setActiveTab] = useState("left")
-    useWindow(setWindowWidth);
+    if ( window) {useWindow(setWindowWidth);}
     if (windowWidth<992 && element?.lefttitle && element?.righttitle) {
         return (<Container>
             <Nav variant="tabs" defaultActiveKey="left" onSelect={(eventKey)=>setActiveTab(eventKey)}>
