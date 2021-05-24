@@ -5,6 +5,8 @@ import PageContent from "./PageContent";
 import TopBar from "./TopBar";
 
 export default function BasePage({title,content}){
+    console.log("Rendering: " + title);
+    console.log("Contents: " + JSON.stringify(content))
     return <div>
         <Head>
             <title>{title}</title>
