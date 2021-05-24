@@ -21,6 +21,7 @@ export default function PageContent({contents: array}){
                 } else if (componentType==="fullwidth"){
                     return <Fullwidth key={key} element={element}/>
                 } else if (componentType==="table"){
+                    console.log (JSON.stringify(element));
                     return <CMSTable element={element}/>
                 } else {
                     return <p>test</p>

@@ -3,11 +3,11 @@ import MarkDown from "./MarkDown";
 import React from "react";
 
 export default function CMSTable({element}){
-    const header = element.headers.split("|");
-    if (element.content.charAt(element.content.length-1) ===";"){
-        element.content = element.content.slice(0,-1);
+    const header = element.headers?.split("|");
+    if (element.content?.charAt(element.content?.length-1) ===";"){
+        element.content = element.content?.slice(0,-1);
     }
-    const contentRows = element.content.split(";")
+    const contentRows = element.content?.split(";")
     return <Container>
         <Row>
             <Col >
