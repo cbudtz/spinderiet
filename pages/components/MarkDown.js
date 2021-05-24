@@ -5,7 +5,13 @@ import {BASE_URL} from "../api/api";
 
 export default function MarkDown({children}) {
     if (!children) {children=""}
-    const markdown = children.replaceAll && children.replaceAll("(/uploads/", "("+ BASE_URL + "uploads/");
+    let markdown = children.replaceAll && children.replaceAll("(/uploads/", "("+ BASE_URL + "uploads/");
+    // if (markdown) {
+    //     markdown = markdown.replaceAll("\n\n", "{x}");
+    //     markdown = markdown.replaceAll("\n", "\xa0\xa0\n");
+    //     markdown = markdown.replaceAll("{x}", "\n\n");
+    //     console.log(markdown);
+    // }
     const renderer =  {
         image: ({alt, src, title,
         }) => {
