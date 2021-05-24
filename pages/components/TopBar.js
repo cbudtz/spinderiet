@@ -10,6 +10,7 @@ export default function TopBar({element}){
                 <Nav.Link href="/laegerne">Lægerne</Nav.Link>
                 <Nav.Link href="/personale">Personale</Nav.Link>
                 <NavDropdown title="Praktisk information" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="om">Om klinikken</NavDropdown.Item>
                     <NavDropdown.Item href="speciallaeger">Speciallæger</NavDropdown.Item>
                     <NavDropdown.Item href="priserpatient">Priser for patienter</NavDropdown.Item>
                     <NavDropdown.Item href="vagtring">Vagtring</NavDropdown.Item>
