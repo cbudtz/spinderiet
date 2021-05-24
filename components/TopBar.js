@@ -3,7 +3,7 @@ import React from "react";
 
 export default function TopBar({element}){
     return <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">Lægerne i spinderiet</Navbar.Brand>
+        <Navbar.Brand href="/">Lægerne i Spinderiet</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
