@@ -3,7 +3,8 @@ import MarkDown from "./MarkDown";
 import React from "react";
 
 export default function CMSTable({element}){
-    const header = element.headers?.split("|");
+    if (!element) {return <></>}
+    let header = element.headers?.split("|");
     if (element.content?.charAt(element.content?.length-1) ===";"){
         element.content = element.content?.slice(0,-1);
     }
@@ -13,7 +14,7 @@ export default function CMSTable({element}){
             <Col >
                 <Table striped={element.striped} size={element.compact && "sm"}>
                     <thead>
-                    <tr>
+                    <tr key={1}>
                         {header.map((header,key)=> <th key={key}>
                             <MarkDown>{ header}</MarkDown>
                         </th>)}

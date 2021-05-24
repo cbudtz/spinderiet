@@ -1,5 +1,5 @@
-import {apiGetStaticProps} from "./api/api";
-import BasePage from "./components/BasePage";
+import {apiGetStaticProps} from "../api/api";
+import BasePage from "../components/BasePage";
 
 
 export default function Priserpatient(props) {
