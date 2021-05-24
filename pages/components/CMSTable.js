@@ -20,9 +20,9 @@ export default function CMSTable({element}){
                     </tr>
                     </thead>
                     <tbody>
-                    {contentRows.map((row)=><tr>
-                        {row.split("|").map((element)=>
-                        <td>
+                    {contentRows.map((row, key)=><tr key={key}>
+                        {row.split("|").map((element, key)=>
+                        <td key={key}>
                             <MarkDown>{element}</MarkDown>
                         </td>)}
                     </tr>)}
