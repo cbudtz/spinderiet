@@ -1,14 +1,14 @@
 import {Col, Container, Row, Table} from "react-bootstrap";
 import MarkDown from "./MarkDown";
 import React from "react";
+import {trimEndCharFromString} from "../util/util";
 
 export default function CMSTable({element}){
     if (!element) {return <></>}
-    let header = element.headers?.split("|");
-    if (element.content?.charAt(element.content?.length-1) ===";"){
-        element.content = element.content?.slice(0,-1);
-    }
-    const contentRows = element.content?.split(";")
+    const headers =trimEndCharFromString(element.headers,";")
+    let header = headers?.split("|");
+    const content = trimEndCharFromString(element.content,";")
+    const contentRows = content?.split(";")
     return <Container>
         <Row>
             <Col >
@@ -23,9 +23,9 @@ export default function CMSTable({element}){
                     <tbody>
                     {contentRows.map((row, key)=><tr key={key}>
                         {row.split("|").map((element, key)=>
-                        <td key={key}>
-                            <MarkDown>{element}</MarkDown>
-                        </td>)}
+                            <td key={key}>
+                                <MarkDown>{element}</MarkDown>
+                            </td>)}
                     </tr>)}
 
                     </tbody>
