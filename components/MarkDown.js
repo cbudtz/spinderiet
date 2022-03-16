@@ -6,23 +6,18 @@ import {BASE_URL} from "../api/api";
 export default function MarkDown({children}) {
     if (!children) {children=""}
     let markdown = children.replaceAll && children.replaceAll("(/uploads/", "("+ BASE_URL + "uploads/");
-    // if (markdown) {
-    //     markdown = markdown.replaceAll("\n\n", "{x}");
-    //     markdown = markdown.replaceAll("\n", "\xa0\xa0\n");
-    //     markdown = markdown.replaceAll("{x}", "\n\n");
-    //     console.log(markdown);
-    // }
     const renderer =  {
         image: ({alt, src, title,
         }) => {
             const width = Number(alt.split("=")[1]?.split("x")[0]);
             const height = Number(alt.split("=")[1]?.split("x")[1]);
+            const smallSrc = src.replaceAll("/uploads/", "/uploads/small_") + " 640w"
            return (
                 <img
                     alt={alt.split("=")[0]}
+                    srcSet = {smallSrc}
                     src={src}
                     title={title}
-
                     style={{ maxWidth: "100%",width:width,
                         height:height}}  />
             )
