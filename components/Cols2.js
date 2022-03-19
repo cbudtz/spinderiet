@@ -2,12 +2,27 @@ import {Col, Container, Nav, Row} from "react-bootstrap";
 import MarkDown from "./MarkDown";
 import React, {useState} from "react";
 import {useWindow} from "../api/window";
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+//import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 export default function Cols2({element}){
     const colStyle = {overflowWrap:"break-word"}
     const  [windowWidth, setWindowWidth] = useState(2000)
     const [activeTab,setActiveTab] = useState("left")
+    const [content, setContent] = useState(element?.left||"")
     useWindow(setWindowWidth);
+    console.log(element.left.replace("\n","<br>"))
+    // return (<Container>
+    //     <Row>
+    //         <Col>
+    //             <ReactQuill theme={"snow"} value={content} onChange={setContent} style={{fontSize:"1rem"}}/>
+    //             <div>
+    //                 <MarkDown>{content}</MarkDown>
+    //             </div>
+    //         </Col>
+    //     </Row>
+    //     </Container>)
     if (windowWidth<992 && element?.lefttitle && element?.righttitle) {
         return (<Container>
             <Nav variant="tabs" defaultActiveKey="left" onSelect={(eventKey)=>setActiveTab(eventKey)}>
@@ -25,7 +40,7 @@ export default function Cols2({element}){
 
                 </Col>
             </Row>
-            </Container>)
+        </Container>)
     } else {
         return <Container>
             <Row>
@@ -36,6 +51,14 @@ export default function Cols2({element}){
                 <Col xl={element?.left ? 4 : 8} lg={6} style={colStyle}>
                     {element?.righttitle && <h4>{element?.righttitle}</h4>}
                     <MarkDown style={{maxWidth: "100%"}}>{element?.right}</MarkDown>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <ReactQuill theme={"snow"} value={content} onChange={setContent} style={{fontSize:"1rem"}}/>
+                    <div>
+                        <MarkDown>{content}</MarkDown>
+                    </div>
                 </Col>
             </Row>
 
