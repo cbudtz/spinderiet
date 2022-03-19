@@ -12,7 +12,7 @@ export default function Cols2({element}){
     const [activeTab,setActiveTab] = useState("left")
     const [content, setContent] = useState(element?.left||"")
     useWindow(setWindowWidth);
-    console.log(element.left.replace("\n","<br>"))
+    console.log(content)
     // return (<Container>
     //     <Row>
     //         <Col>
@@ -55,7 +55,22 @@ export default function Cols2({element}){
             </Row>
             <Row>
                 <Col>
-                    <ReactQuill theme={"snow"} value={content} onChange={setContent} style={{fontSize:"1rem"}}/>
+                    <ReactQuill modules={{toolbar: {
+                            container: [
+                                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                                ['bold', 'italic', 'underline'],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                [{ 'align': [] }],
+                                ['link', 'image'],
+                                ['clean'],
+                                [{ 'color': [] }]
+                            ],
+                            handlers: {
+                                //FIXME: image: this.imageHandler
+                            }
+                        }}
+                    }
+                                theme={"snow"} value={content} onChange={setContent} style={{fontSize:"1rem"}}/>
                     <div>
                         <MarkDown>{content}</MarkDown>
                     </div>
