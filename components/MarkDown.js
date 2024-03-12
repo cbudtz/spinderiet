@@ -19,8 +19,25 @@ export default function MarkDown({ children }) {
     image: ({ alt, src, title }) => {
       const width = Number(alt.split("=")[1]?.split("x")[0]);
       const height = Number(alt.split("=")[1]?.split("x")[1]);
+      console.log("Width: " + width);
+      if (!width || width > 500) {
+        return (
+          <div style={{ margin: "0 -15px 0px -15px" }}>
+            <img
+              alt={alt.split("=")[0]}
+              src={src}
+              title={title}
+              style={{
+                maxWidth: "100%",
+                width: width,
+                height: height,
+              }}
+            />
+          </div>
+        );
+      }
       return (
-        <div style={{ margin: "0 -15px 0px -15px" }}>
+        <span>
           <img
             alt={alt.split("=")[0]}
             src={src}
@@ -31,7 +48,7 @@ export default function MarkDown({ children }) {
               height: height,
             }}
           />
-        </div>
+        </span>
       );
     },
   };
