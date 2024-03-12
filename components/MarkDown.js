@@ -19,7 +19,6 @@ export default function MarkDown({ children }) {
     image: ({ alt, src, title }) => {
       const width = Number(alt.split("=")[1]?.split("x")[0]);
       const height = Number(alt.split("=")[1]?.split("x")[1]);
-      console.log("Width: " + width);
       if (!width || width > 500) {
         return (
           <div style={{ margin: "0 -15px 0px -15px" }}>
