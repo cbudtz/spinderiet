@@ -1,0 +1,1013 @@
+---
+globs: *.puml
+alwaysApply: false
+---
+## Sequence Diagrams
+
+Sequence diagrams show interactions between participants over time.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+Alice -> Bob: Hello Bob, how are you?
+Bob --> Alice: I'm good, thanks!
+@enduml
+```
+
+### Arrow Types
+- `->` : Solid line with arrow (synchronous call)
+- `-->` : Dashed line with arrow (return/response)
+- `->>` : Solid line with open arrow (asynchronous call)
+- `-->>` : Dashed line with open arrow (asynchronous response)
+
+### Participants
+
+```plantuml
+@startuml
+actor User
+participant "First Class" as A
+participant "Second Class" as B
+participant "Last Class" as C
+
+User -> A: DoWork
+activate A
+A -> B: Delegate
+activate B
+B -> C: Call
+activate C
+C --> B: Return
+deactivate C
+B --> A: Return
+deactivate B
+A --> User: Done
+deactivate A
+@enduml
+```
+
+### Participant Types
+- `actor` : External actor
+- `participant` : Regular participant
+- `boundary` : Boundary element
+- `control` : Control element
+- `entity` : Entity element
+- `database` : Database element
+- `collections` : Collections element
+- `queue` : Queue element
+
+### Activation Boxes
+
+```plantuml
+@startuml
+Alice -> Bob: Authentication Request
+activate Bob
+Bob -> Bob: Check credentials
+activate Bob #DarkBlue
+Bob --> Alice: Authentication Response
+deactivate Bob
+deactivate Bob
+@enduml
+```
+
+### Notes
+
+```plantuml
+@startuml
+Alice -> Bob: Hello
+note right of Alice: This is a note
+note left of Bob: Another note
+note over Alice, Bob: Note spanning multiple participants
+@enduml
+```
+
+### Loops and Conditions
+
+```plantuml
+@startuml
+loop Every minute
+    Alice -> Bob: Ping
+    Bob --> Alice: Pong
+end
+
+alt Success case
+    Alice -> Bob: Request
+    Bob --> Alice: Success
+else Failure case
+    Alice -> Bob: Request
+    Bob --> Alice: Error
+end
+
+opt Optional case
+    Alice -> Bob: Optional message
+end
+@enduml
+```
+
+### Grouping
+
+```plantuml
+@startuml
+group Group 1
+    Alice -> Bob: Message 1
+end
+group Group 2
+    Alice -> Bob: Message 2
+end
+@enduml
+```
+
+### References
+
+```plantuml
+@startuml
+Alice -> Bob: Request
+ref over Bob
+    Detailed sequence
+end ref
+@enduml
+```
+
+---
+
+## Class Diagrams
+
+Class diagrams show the static structure of a system.
+
+### Basic Class Definition
+
+```plantuml
+@startuml
+class User {
+    -String name
+    -String email
+    +login()
+    +logout()
+    #protectedMethod()
+    ~packageMethod()
+}
+@enduml
+```
+
+### Visibility Modifiers
+- `+` : Public
+- `-` : Private
+- `#` : Protected
+- `~` : Package/Internal
+
+### Abstract Classes and Interfaces
+
+```plantuml
+@startuml
+abstract class AbstractClass {
+    +abstractMethod()
+}
+
+interface InterfaceName {
+    +method1()
+    +method2()
+}
+@enduml
+```
+
+### Relationships
+
+```plantuml
+@startuml
+class Parent
+class Child
+
+' Inheritance
+Parent <|-- Child
+
+' Implementation
+Interface <|.. Implementation
+
+' Association
+ClassA --> ClassB : association
+
+' Aggregation (has-a, weak)
+ClassA o-- ClassB : aggregation
+
+' Composition (has-a, strong)
+ClassA *-- ClassB : composition
+
+' Dependency
+ClassA ..> ClassB : dependency
+
+' Bidirectional
+ClassA <--> ClassB : bidirectional
+@enduml
+```
+
+### Cardinality/Multiplicity
+
+```plantuml
+@startuml
+User "1" --> "0..*" Order : places
+User "1" --> "1" Profile : has
+Company "1" --> "*" Employee : employs
+@enduml
+```
+
+### Notes and Stereotypes
+
+```plantuml
+@startuml
+class User {
+    +String name
+}
+note right of User : This is a user class
+
+class Order <<Entity>>
+class Service <<Service>>
+@enduml
+```
+
+### Nested Classes
+
+```plantuml
+@startuml
+class Outer {
+    +method()
+    class Inner {
+        +innerMethod()
+    }
+}
+@enduml
+```
+
+---
+
+## Use Case Diagrams
+
+Use case diagrams represent functional requirements.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+actor User
+User --> (Login)
+User --> (Browse Products)
+User --> (Purchase Product)
+@enduml
+```
+
+### Use Case Relationships
+
+```plantuml
+@startuml
+actor User
+(Login) <|-- (Login with OAuth) : extends
+(Checkout) ..> (Validate Payment) : includes
+User --> (Login)
+User --> (Checkout)
+@enduml
+```
+
+### Packages
+
+```plantuml
+@startuml
+package "E-Commerce System" {
+    actor Customer
+    (Browse Products)
+    (Add to Cart)
+    (Checkout)
+}
+@enduml
+```
+
+---
+
+## Activity Diagrams
+
+Activity diagrams show workflow and process flow.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+start
+:User logs in;
+if (Credentials valid?) then (yes)
+    :Display dashboard;
+else (no)
+    :Show error message;
+endif
+stop
+@enduml
+```
+
+### Decision Points
+
+```plantuml
+@startuml
+start
+:Process request;
+if (Request valid?) then (yes)
+    :Process data;
+    if (Data complete?) then (yes)
+        :Save data;
+    else (no)
+        :Request more data;
+    endif
+else (no)
+    :Reject request;
+endif
+stop
+@enduml
+```
+
+### Loops
+
+```plantuml
+@startuml
+start
+while (More items?) is (yes)
+    :Process item;
+endwhile (no)
+stop
+@enduml
+```
+
+### Parallel Activities
+
+```plantuml
+@startuml
+start
+fork
+    :Task 1;
+fork again
+    :Task 2;
+fork again
+    :Task 3;
+end fork
+stop
+@enduml
+```
+
+### Partitions (Swimlanes)
+
+```plantuml
+@startuml
+|#LightBlue|User|
+start
+:Login;
+|#LightGreen|System|
+:Validate credentials;
+|User|
+:View dashboard;
+stop
+@enduml
+```
+
+---
+
+## Component Diagrams
+
+Component diagrams show organization and dependencies.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+[Web Server] --> [Application Server]
+[Application Server] --> [Database]
+@enduml
+```
+
+### Interfaces
+
+```plantuml
+@startuml
+[Component A] --> (Interface)
+(Interface) <-- [Component B]
+@enduml
+```
+
+### Packages
+
+```plantuml
+@startuml
+package "Frontend" {
+    [React App]
+    [Vue App]
+}
+package "Backend" {
+    [API Server]
+    [Auth Service]
+}
+[React App] --> [API Server]
+@enduml
+```
+
+### Notes
+
+```plantuml
+@startuml
+[Component A] --> [Component B]
+note right of [Component A] : Uses REST API
+@enduml
+```
+
+---
+
+## Deployment Diagrams
+
+Deployment diagrams show physical deployment.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+node "Web Server" {
+    component "Apache"
+}
+node "Application Server" {
+    component "Tomcat"
+}
+node "Database Server" {
+    database "MySQL"
+}
+"Web Server" --> "Application Server"
+"Application Server" --> "Database Server"
+@enduml
+```
+
+### Cloud and Devices
+
+```plantuml
+@startuml
+cloud "AWS" {
+    node "EC2 Instance" {
+        component "Web App"
+    }
+}
+device "Mobile" {
+    component "Mobile App"
+}
+"Mobile App" --> "Web App"
+@enduml
+```
+
+---
+
+## State Diagrams
+
+State diagrams show state transitions.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+[*] --> Idle
+Idle --> Processing : Start
+Processing --> Idle : Complete
+Processing --> Error : Fail
+Error --> Idle : Reset
+Idle --> [*] : Shutdown
+@enduml
+```
+
+### Composite States
+
+```plantuml
+@startuml
+[*] --> State1
+State1 --> State2 : Event1
+State2 --> State3 : Event2
+State1 : entry / Do something
+State1 : exit / Cleanup
+State3 --> [*]
+@enduml
+```
+
+### Nested States
+
+```plantuml
+@startuml
+[*] --> State1
+State1 --> State2
+state State1 {
+    [*] --> SubState1
+    SubState1 --> SubState2
+    SubState2 --> [*]
+}
+@enduml
+```
+
+### History States
+
+```plantuml
+@startuml
+[*] --> State1
+State1 --> State2
+State2 --> State1 : Return
+State1 : [H*] : Remember last state
+@enduml
+```
+
+---
+
+## Object Diagrams
+
+Object diagrams show instances at a point in time.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+object User {
+    name = "John Doe"
+    email = "john@example.com"
+}
+object Order {
+    orderId = 12345
+    total = 99.99
+}
+User --> Order : places
+@enduml
+```
+
+---
+
+## Timing Diagrams
+
+Timing diagrams focus on timing constraints.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+robust "User" as U
+robust "System" as S
+U -> S : Request
+S -> U : Response
+@enduml
+```
+
+### State Changes
+
+```plantuml
+@startuml
+robust "Component" as C
+C is Idle
+C is Processing
+C is Idle
+@enduml
+```
+
+---
+
+## Package Diagrams
+
+Package diagrams show package structure.
+
+### Basic Syntax
+
+```plantuml
+@startuml
+package "com.example" {
+    class User
+    class Order
+}
+package "com.example.util" {
+    class Helper
+}
+"com.example" --> "com.example.util"
+@enduml
+```
+
+### Namespace
+
+```plantuml
+@startuml
+namespace com.example {
+    class User
+    class Order
+}
+namespace com.example.util {
+    class Helper
+}
+@enduml
+```
+
+---
+
+## Other Diagram Types
+
+### Gantt Charts
+
+```plantuml
+@startgantt
+project starts 2023-01-01
+[Task 1] lasts 5 days
+[Task 2] starts after [Task 1] and lasts 3 days
+[Task 3] starts 2023-01-10 and lasts 2 days
+@endgantt
+```
+
+### Mind Maps
+
+```plantuml
+@startmindmap
+* Root
+** Branch 1
+*** Sub-branch 1.1
+*** Sub-branch 1.2
+** Branch 2
+*** Sub-branch 2.1
+@endmindmap
+```
+
+### JSON Data
+
+```plantuml
+@startjson
+{
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown"
+  }
+}
+@endjson
+```
+
+### YAML Data
+
+```plantuml
+@startyaml
+name: John Doe
+age: 30
+address:
+  street: 123 Main St
+  city: Anytown
+@endyaml
+```
+
+### ER Diagrams
+
+```plantuml
+@startuml
+entity User {
+    *id : int <<PK>>
+    --
+    *name : string
+    email : string
+}
+entity Order {
+    *id : int <<PK>>
+    --
+    *userId : int <<FK>>
+    total : decimal
+}
+User ||--o{ Order
+@enduml
+```
+
+### Wireframe/Salt
+
+```plantuml
+@startsalt
+{
+  Login
+  Username: |"user@example.com"|
+  Password: |****|
+  [Login Button]
+}
+@endsalt
+```
+
+---
+
+## Relationships
+
+### Relationship Types
+
+```plantuml
+@startuml
+class A
+class B
+class C
+class D
+class E
+class F
+
+' Inheritance
+A <|-- B
+
+' Implementation
+C <|.. D
+
+' Association (simple)
+A --> B
+
+' Aggregation (has-a, weak)
+A o-- B
+
+' Composition (has-a, strong)
+A *-- B
+
+' Dependency
+A ..> B
+
+' Bidirectional
+A <--> B
+@enduml
+```
+
+### Relationship Labels and Cardinality
+
+```plantuml
+@startuml
+User "1" --> "0..*" Order : places
+Company "1" --> "*" Employee : employs
+Student "1" --> "1" Locker : has
+@enduml
+```
+
+### Relationship Qualifiers
+
+```plantuml
+@startuml
+User ||--o{ Order : places
+Order }o--|| Product : contains
+@enduml
+```
+
+---
+
+## Styling & Theming
+
+### Themes
+
+```plantuml
+@startuml
+!theme spacelab
+' Available themes: spacelab, cerulean, cosmo, cyborg, darkly, flatly, 
+' journal, lumen, paper, readable, sandstone, simplex, slate, 
+' superhero, united, yeti, mars, aws-orange, reddress-darkblue, etc.
+class User
+@enduml
+```
+
+### Skinparam (Global Styling)
+
+```plantuml
+@startuml
+skinparam backgroundColor #EEEBDC
+skinparam class {
+    BackgroundColor #A9DCDF
+    BorderColor #0F5C94
+    ArrowColor #0F5C94
+    FontSize 12
+    FontName Arial
+}
+skinparam arrow {
+    Color #0F5C94
+    Thickness 2
+}
+class User
+@enduml
+```
+
+### Inline Styling
+
+```plantuml
+@startuml
+class User #LightGreen {
+    +String name
+}
+class Order #Yellow {
+    +int id
+}
+@enduml
+```
+
+### Color Names
+
+Common colors: `LightBlue`, `LightGreen`, `Yellow`, `Orange`, `Red`, `Pink`, `LightGray`, `DarkGray`, `Black`, `White`
+
+### Custom Colors
+
+```plantuml
+@startuml
+skinparam classBackgroundColor #A9DCDF
+skinparam classBorderColor #0F5C94
+class User
+@enduml
+```
+
+### Fonts and Sizes
+
+```plantuml
+@startuml
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam defaultFontColor #000000
+class User
+@enduml
+```
+
+---
+
+## Preprocessing Directives
+
+### Include Files
+
+```plantuml
+@startuml
+!include path/to/file.puml
+!include <stdlib/common.puml>
+@enduml
+```
+
+### Define Variables
+
+```plantuml
+@startuml
+!define VAR_NAME value
+!define CLASS_COLOR #LightBlue
+class User #CLASS_COLOR
+@enduml
+```
+
+### Conditional Compilation
+
+```plantuml
+@startuml
+!ifdef VAR_NAME
+    class User
+!endif
+!ifndef VAR_NAME
+    class Guest
+!endif
+@enduml
+```
+
+### Functions
+
+```plantuml
+@startuml
+!function $inc($arg)
+!return $arg + 1
+!endfunction
+@enduml
+```
+
+### Standard Library Includes
+
+```plantuml
+@startuml
+!include <tupadr3/font-awesome/server>
+!include <tupadr3/font-awesome/database>
+FA_SERVER(server, "Web Server")
+FA_DATABASE(db, "Database")
+server --> db
+@enduml
+```
+
+---
+
+## Common Patterns
+
+### Multi-page Diagrams
+
+```plantuml
+@startuml
+' Page 1
+Alice -> Bob: Message 1
+newpage
+' Page 2
+Bob -> Charlie: Message 2
+@enduml
+```
+
+### Legend
+
+```plantuml
+@startuml
+legend right
+    |<#LightGreen>| Active |
+    |<#LightGray>| Inactive |
+endlegend
+@enduml
+```
+
+### Header and Footer
+
+```plantuml
+@startuml
+header
+    Generated by PlantUML
+endheader
+
+footer
+    Page %page% of %lastpage%
+endfooter
+
+Alice -> Bob: Hello
+@enduml
+```
+
+### Hide/Show Elements
+
+```plantuml
+@startuml
+class User {
+    +name
+    +email
+}
+hide methods
+show fields
+@enduml
+```
+
+### Remove Elements
+
+```plantuml
+@startuml
+class User
+class Order
+User --> Order
+remove Order
+@enduml
+```
+
+### Layout Control
+
+```plantuml
+@startuml
+!define LAYOUT_TOP_DOWN
+class User
+class Order
+User --> Order
+@enduml
+```
+
+### Grouping with Rectangles
+
+```plantuml
+@startuml
+rectangle "Frontend" {
+    [React App]
+    [Vue App]
+}
+rectangle "Backend" {
+    [API Server]
+    [Database]
+}
+[React App] --> [API Server]
+@enduml
+```
+
+---
+
+## Best Practices for LLMs
+
+1. **Always wrap code in proper tags**: Use `@startuml` and `@enduml` (or appropriate tags for other diagram types)
+
+2. **Use meaningful names**: Choose descriptive names for classes, participants, and components
+
+3. **Add titles**: Use `title` directive for clarity
+
+4. **Use comments**: Add comments with `'` to explain complex parts
+
+5. **Consistent styling**: Apply themes or skinparam for consistent appearance
+
+6. **Proper relationships**: Use correct relationship types (inheritance, composition, etc.)
+
+7. **Cardinality**: Include cardinality when relevant (1, *, 0..1, 1..*, etc.)
+
+8. **Error handling**: Show error paths in activity and sequence diagrams
+
+9. **Modularity**: Use packages and namespaces to organize large diagrams
+
+10. **Documentation**: Add notes to explain non-obvious relationships or behaviors
+
+---
+
+## Quick Reference: Diagram Type Tags
+
+- `@startuml` / `@enduml` - UML diagrams (class, sequence, use case, etc.)
+- `@startgantt` / `@endgantt` - Gantt charts
+- `@startmindmap` / `@endmindmap` - Mind maps
+- `@startjson` / `@endjson` - JSON visualization
+- `@startyaml` / `@endyaml` - YAML visualization
+- `@startsalt` / `@endsalt` - Wireframe/UI mockups
+- `@startditaa` / `@endditaa` - Ditaa diagrams
+
+---
+
+## Resources
+
+- Official Documentation: https://plantuml.com/guide
+- Standard Library: https://plantuml.com/stdlib
+- Online Server: https://www.plantuml.com/plantuml/uml/
+
+---
+
+*This cheat sheet is designed to help LLMs generate accurate PlantUML diagrams. Always verify syntax with the official documentation for complex or edge cases.*

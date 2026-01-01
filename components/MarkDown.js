@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { BASE_URL } from "../api/api";
 
@@ -16,16 +16,17 @@ export default function MarkDown({ children }) {
           // Also set CSS custom property as fallback
           img.style.setProperty('--img-max-width', `${width}px`);
           img.style.setProperty('height', 'auto', 'important');
-          img.style.setProperty('width', '100%', 'important');
+          img.style.setProperty('width', `${width}px`, 'important'); // Set explicit width
           img.style.setProperty('max-width', `${width}px`, 'important');
         }
       });
     }
   };
   
-  // useLayoutEffect runs synchronously before browser paint - ensures styles are set before render
+  // useEffect runs after render - ensures styles are set on client side
   // This handles cases where inline styles are stripped during SSR/build
-  useLayoutEffect(() => {
+  // Only runs on client (typeof window check inside applyImageStyles)
+  useEffect(() => {
     applyImageStyles();
     
     // Also run after a short delay to catch any late-rendered images
@@ -89,12 +90,15 @@ export default function MarkDown({ children }) {
       // Create style object - ensure all properties are explicitly set
       const imgStyle = {
         height: "auto",
-        width: "100%",
       };
       
       if (hasValidWidth) {
+        // For images with width constraints, set explicit width
+        imgStyle.width = `${width}px`;
         imgStyle.maxWidth = `${width}px`;
       } else {
+        // For images without constraints, make them responsive
+        imgStyle.width = "100%";
         imgStyle.maxWidth = "100%";
       }
       
