@@ -19,12 +19,6 @@ a {
 }
 
 /* Prevent text and image overlap in column layouts */
-.container .row .col img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
 .container .row .col {
   word-wrap: break-word;
   min-width: 0; /* Allow flex items to shrink below content size */
@@ -36,11 +30,10 @@ a {
   max-width: 100%;
 }
 
-.container .row .col span[style*="display: block"] img,
-.container .row .col span[style*="display: inline-block"] img {
-  max-width: 100% !important;
-  height: auto !important;
-  width: 100%;
+/* Base image styles - don't override width/maxWidth from component */
+.container .row .col img {
+  display: block;
+  height: auto;
   object-fit: contain;
 }
 
