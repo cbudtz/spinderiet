@@ -40,25 +40,28 @@ export default function MarkDown({ children }) {
       
       const imgStyle = {
         maxWidth: "100%",
+        height: "auto",
       };
       
+      // Only set width if it's valid, but maxWidth: 100% will ensure it scales down if needed
       if (hasValidWidth) {
-        imgStyle.width = width;
+        imgStyle.width = `${width}px`;
       }
-      if (hasValidHeight) {
-        imgStyle.height = height;
+      if (hasValidHeight && !hasValidWidth) {
+        // Only set height if width wasn't set, to maintain aspect ratio
+        imgStyle.height = `${height}px`;
       }
       
-      // For large images, use block display but don't break out of container
+      // For large images, use block display
       // Use span with display: block instead of div to avoid nesting issues in <p> tags
       if (isLargeImage) {
         return (
-          <span style={{ display: "block", width: "100%", maxWidth: "100%" }}>
+          <span style={{ display: "block" }}>
             <img
               alt={altText}
               src={src}
               title={title}
-              style={{ ...imgStyle, width: "100%", maxWidth: "100%", height: "auto" }}
+              style={imgStyle}
             />
           </span>
         );
@@ -66,7 +69,7 @@ export default function MarkDown({ children }) {
       
       // For smaller images, use inline span
       return (
-        <span>
+        <span style={{ display: "inline-block" }}>
           <img
             alt={altText}
             src={src}

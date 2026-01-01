@@ -26,18 +26,17 @@ a {
 }
 
 .container .row .col {
-  overflow: hidden;
   word-wrap: break-word;
 }
 
-/* Ensure images don't break out of their containers */
+/* Ensure images don't break out of their containers but aren't clipped */
 .container .row .col span[style*="display: block"] {
   max-width: 100%;
-  overflow: hidden;
+  display: block;
 }
 
 .container .row .col span[style*="display: block"] img {
-  width: 100%;
-  height: auto;
   max-width: 100%;
+  height: auto;
+  width: auto;
 }

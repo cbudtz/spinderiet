@@ -6,8 +6,7 @@ import { useWindow } from "../api/window";
 export default function Cols2({ element }) {
   const colStyle = { 
     overflowWrap: "break-word",
-    padding: "0 15px",
-    overflow: "hidden"
+    padding: "0 15px"
   };
   const [windowWidth, setWindowWidth] = useState(() => {
     // Initialize with a value that matches server-side rendering
