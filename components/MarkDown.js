@@ -1,8 +1,56 @@
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { BASE_URL } from "../api/api";
 
 export default function MarkDown({ children }) {
+  const containerRef = useRef(null);
+  
+  // Function to apply styles to images - can be called multiple times
+  const applyImageStyles = () => {
+    if (containerRef.current && typeof window !== 'undefined') {
+      const images = containerRef.current.querySelectorAll('img[data-width]');
+      images.forEach((img) => {
+        const width = img.getAttribute('data-width');
+        if (width) {
+          // Set styles directly on DOM element - this works even if React props are stripped
+          // Also set CSS custom property as fallback
+          img.style.setProperty('--img-max-width', `${width}px`);
+          img.style.setProperty('height', 'auto', 'important');
+          img.style.setProperty('width', '100%', 'important');
+          img.style.setProperty('max-width', `${width}px`, 'important');
+        }
+      });
+    }
+  };
+  
+  // useLayoutEffect runs synchronously before browser paint - ensures styles are set before render
+  // This handles cases where inline styles are stripped during SSR/build
+  useLayoutEffect(() => {
+    applyImageStyles();
+    
+    // Also run after a short delay to catch any late-rendered images
+    const timeoutId = setTimeout(applyImageStyles, 0);
+    
+    // Use MutationObserver to catch dynamically added images
+    if (containerRef.current && typeof window !== 'undefined' && window.MutationObserver) {
+      const observer = new MutationObserver(() => {
+        applyImageStyles();
+      });
+      
+      observer.observe(containerRef.current, {
+        childList: true,
+        subtree: true,
+      });
+      
+      return () => {
+        clearTimeout(timeoutId);
+        observer.disconnect();
+      };
+    }
+    
+    return () => clearTimeout(timeoutId);
+  }, [children]);
+  
   if (!children) {
     children = "";
   }
@@ -50,46 +98,12 @@ export default function MarkDown({ children }) {
         imgStyle.maxWidth = "100%";
       }
       
-      // Image component with ref to set styles after render if needed
-      const ImageWithStyle = () => {
-        const imgRef = useRef(null);
-        
-        useEffect(() => {
-          if (imgRef.current) {
-            // Ensure styles are applied even if they were stripped
-            imgRef.current.style.height = "auto";
-            imgRef.current.style.width = "100%";
-            if (hasValidWidth) {
-              imgRef.current.style.maxWidth = `${width}px`;
-            } else {
-              imgRef.current.style.maxWidth = "100%";
-            }
-          }
-        }, [hasValidWidth, width]);
-        
-        // For large images, use block display
-        if (isLargeImage) {
-          return (
-            <span style={{ display: "block" }}>
-              <img
-                {...props}
-                ref={imgRef}
-                alt={altText}
-                src={src}
-                title={title}
-                style={imgStyle}
-                data-width={hasValidWidth ? width : undefined}
-              />
-            </span>
-          );
-        }
-        
-        // For smaller images, use inline span
+      // For large images, use block display
+      if (isLargeImage) {
         return (
-          <span style={{ display: "inline-block" }}>
+          <span style={{ display: "block" }}>
             <img
               {...props}
-              ref={imgRef}
               alt={altText}
               src={src}
               title={title}
@@ -98,14 +112,28 @@ export default function MarkDown({ children }) {
             />
           </span>
         );
-      };
+      }
       
-      return <ImageWithStyle />;
+      // For smaller images, use inline span
+      return (
+        <span style={{ display: "inline-block" }}>
+          <img
+            {...props}
+            alt={altText}
+            src={src}
+            title={title}
+            style={imgStyle}
+            data-width={hasValidWidth ? width : undefined}
+          />
+        </span>
+      );
     },
   };
   return (
-    <ReactMarkdown components={components}>
-      {markdown}
-    </ReactMarkdown>
+    <div ref={containerRef}>
+      <ReactMarkdown components={components}>
+        {markdown}
+      </ReactMarkdown>
+    </div>
   );
 }

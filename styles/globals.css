@@ -39,13 +39,29 @@ a {
 }
 
 /* Fallback: Use data-width attribute if inline styles are stripped during build */
+/* This CSS works during SSR and provides base styles */
 .container .row .col img[data-width] {
-  width: 100%;
-  max-width: 100%;
+  height: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
+/* Specific widths - add more as needed */
 .container .row .col img[data-width="300"] {
-  max-width: 300px;
+  max-width: 300px !important;
+}
+
+.container .row .col img[data-width="400"] {
+  max-width: 400px !important;
+}
+
+.container .row .col img[data-width="500"] {
+  max-width: 500px !important;
+}
+
+/* Generic fallback using CSS custom properties - set via JavaScript */
+.container .row .col img[data-width] {
+  max-width: var(--img-max-width, 100%);
 }
 
 /* Ensure Bootstrap columns work correctly */
