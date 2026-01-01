@@ -41,6 +41,18 @@ a {
 
 /* CSS-based solution: Target images by alt attribute pattern (works during SSR) */
 /* CRITICAL: These rules MUST be included in build - test with visible border first if needed */
+/* Universal selector for =200 - set explicit width */
+img[alt*="=200"],
+img[alt$="=200"],
+img[alt*=".jpg=200"],
+img[alt*=".png=200"],
+img[alt*=".svg=200"] {
+  height: auto !important;
+  width: 200px !important;
+  max-width: 200px !important;
+  display: block !important;
+}
+
 /* Universal selector - matches any img with alt containing =300 anywhere in the page */
 img[alt*="=300"],
 img[alt$="=300"],
@@ -48,12 +60,23 @@ img[alt*=".jpg=300"],
 img[alt*=".png=300"],
 img[alt*=".svg=300"] {
   height: auto !important;
-  width: 100% !important;
+  width: 300px !important;
   max-width: 300px !important;
   display: block !important;
 }
 
 /* More specific selectors for column layouts - multiple paths to ensure match */
+.container .row [class*="col-"] img[alt*="=200"],
+.container .row .col img[alt*="=200"],
+.container .row [class*="col-"] p img[alt*="=200"],
+.container .row .col p img[alt*="=200"],
+.container .row [class*="col-"] div img[alt*="=200"],
+.container .row .col div img[alt*="=200"] {
+  height: auto !important;
+  width: 200px !important;
+  max-width: 200px !important;
+}
+
 .container .row [class*="col-"] img[alt*="=300"],
 .container .row .col img[alt*="=300"],
 .container .row [class*="col-"] p img[alt*="=300"],
@@ -61,7 +84,7 @@ img[alt*=".svg=300"] {
 .container .row [class*="col-"] div img[alt*="=300"],
 .container .row .col div img[alt*="=300"] {
   height: auto !important;
-  width: 100% !important;
+  width: 300px !important;
   max-width: 300px !important;
 }
 
@@ -72,7 +95,7 @@ img[alt*=".jpg=400"],
 img[alt*=".png=400"],
 img[alt*=".svg=400"] {
   height: auto !important;
-  width: 100% !important;
+  width: 400px !important;
   max-width: 400px !important;
   display: block !important;
 }
@@ -85,7 +108,7 @@ img[alt*=".svg=400"] {
 .container .row [class*="col-"] div img[alt*="=400"],
 .container .row .col div img[alt*="=400"] {
   height: auto !important;
-  width: 100% !important;
+  width: 400px !important;
   max-width: 400px !important;
 }
 
@@ -96,7 +119,7 @@ img[alt*=".jpg=500"],
 img[alt*=".png=500"],
 img[alt*=".svg=500"] {
   height: auto !important;
-  width: 100% !important;
+  width: 500px !important;
   max-width: 500px !important;
   display: block !important;
 }
@@ -109,27 +132,35 @@ img[alt*=".svg=500"] {
 .container .row [class*="col-"] div img[alt*="=500"],
 .container .row .col div img[alt*="=500"] {
   height: auto !important;
-  width: 100% !important;
+  width: 500px !important;
   max-width: 500px !important;
 }
 
 /* Fallback: Use data-width attribute if present */
 .container .row .col img[data-width] {
   height: auto !important;
-  width: 100% !important;
+  width: auto !important;
   max-width: 100% !important;
 }
 
-/* Specific widths via data-width - add more as needed */
+/* Specific widths via data-width - set explicit width */
+.container .row .col img[data-width="200"] {
+  width: 200px !important;
+  max-width: 200px !important;
+}
+
 .container .row .col img[data-width="300"] {
+  width: 300px !important;
   max-width: 300px !important;
 }
 
 .container .row .col img[data-width="400"] {
+  width: 400px !important;
   max-width: 400px !important;
 }
 
 .container .row .col img[data-width="500"] {
+  width: 500px !important;
   max-width: 500px !important;
 }
 
