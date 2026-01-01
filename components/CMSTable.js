@@ -21,9 +21,9 @@ export default function CMSTable({element}){
                     </tr>
                     </thead>
                     <tbody>
-                    {contentRows.map((row, key)=><tr key={key}>
-                        {row.split("|").map((element, key)=>
-                            <td key={key}>
+                    {contentRows.map((row, rowKey)=><tr key={rowKey}>
+                        {row.split("|").map((element, cellKey)=>
+                            <td key={`${rowKey}-${cellKey}`}>
                                 <MarkDown>{element}</MarkDown>
                             </td>)}
                     </tr>)}

@@ -1,7 +1,7 @@
 html {
   scroll-behavior: smooth;
 }
-,
+
 body {
   padding: 0;
   margin: 0;
@@ -16,4 +16,130 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/* Prevent text and image overlap in column layouts */
+.container .row .col {
+  word-wrap: break-word;
+  min-width: 0; /* Allow flex items to shrink below content size */
+}
+
+/* Ensure images don't break out of their containers but aren't clipped */
+.container .row .col span[style*="display: block"],
+.container .row .col span[style*="display: inline-block"] {
+  max-width: 100%;
+}
+
+/* Base image styles for all images in column layouts - match all Bootstrap column classes */
+.container .row [class*="col-"] img,
+.container .row .col img {
+  display: block;
+  height: auto;
+  object-fit: contain;
+  width: 100%;
+}
+
+/* CSS-based solution: Target images by alt attribute pattern (works during SSR) */
+/* CRITICAL: These rules MUST be included in build - test with visible border first if needed */
+/* Universal selector - matches any img with alt containing =300 anywhere in the page */
+img[alt*="=300"],
+img[alt$="=300"],
+img[alt*=".jpg=300"],
+img[alt*=".png=300"],
+img[alt*=".svg=300"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 300px !important;
+  display: block !important;
+}
+
+/* More specific selectors for column layouts - multiple paths to ensure match */
+.container .row [class*="col-"] img[alt*="=300"],
+.container .row .col img[alt*="=300"],
+.container .row [class*="col-"] p img[alt*="=300"],
+.container .row .col p img[alt*="=300"],
+.container .row [class*="col-"] div img[alt*="=300"],
+.container .row .col div img[alt*="=300"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 300px !important;
+}
+
+/* Universal selector for =400 */
+img[alt*="=400"],
+img[alt$="=400"],
+img[alt*=".jpg=400"],
+img[alt*=".png=400"],
+img[alt*=".svg=400"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  display: block !important;
+}
+
+/* Images with alt containing =400 */
+.container .row [class*="col-"] img[alt*="=400"],
+.container .row .col img[alt*="=400"],
+.container .row [class*="col-"] p img[alt*="=400"],
+.container .row .col p img[alt*="=400"],
+.container .row [class*="col-"] div img[alt*="=400"],
+.container .row .col div img[alt*="=400"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 400px !important;
+}
+
+/* Universal selector for =500 */
+img[alt*="=500"],
+img[alt$="=500"],
+img[alt*=".jpg=500"],
+img[alt*=".png=500"],
+img[alt*=".svg=500"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 500px !important;
+  display: block !important;
+}
+
+/* Images with alt containing =500 */
+.container .row [class*="col-"] img[alt*="=500"],
+.container .row .col img[alt*="=500"],
+.container .row [class*="col-"] p img[alt*="=500"],
+.container .row .col p img[alt*="=500"],
+.container .row [class*="col-"] div img[alt*="=500"],
+.container .row .col div img[alt*="=500"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 500px !important;
+}
+
+/* Fallback: Use data-width attribute if present */
+.container .row .col img[data-width] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Specific widths via data-width - add more as needed */
+.container .row .col img[data-width="300"] {
+  max-width: 300px !important;
+}
+
+.container .row .col img[data-width="400"] {
+  max-width: 400px !important;
+}
+
+.container .row .col img[data-width="500"] {
+  max-width: 500px !important;
+}
+
+/* Ensure Bootstrap columns work correctly */
+.container .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.container .row > [class*="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
 }

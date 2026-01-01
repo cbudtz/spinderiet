@@ -1,14 +1,32 @@
 import { Col, Container, Nav, Row, Button } from "react-bootstrap";
 import MarkDown from "./MarkDown";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useWindow } from "../api/window";
 
 export default function Cols2({ element }) {
-  const colStyle = { overflowWrap: "break-word" };
-  const [windowWidth, setWindowWidth] = useState(2000);
+  const colStyle = { 
+    overflowWrap: "break-word"
+  };
+  const [windowWidth, setWindowWidth] = useState(() => {
+    // Initialize with a value that matches server-side rendering
+    if (typeof window !== "undefined") {
+      return window.innerWidth;
+    }
+    return 2000; // Default for SSR
+  });
   const [activeTab, setActiveTab] = useState("left");
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  
   useWindow(setWindowWidth);
-  if (windowWidth < 992 && element?.lefttitle && element?.righttitle) {
+  
+  // During SSR and initial client render, use the desktop layout to avoid hydration mismatch
+  const shouldUseMobileLayout = isClient && windowWidth < 992 && element?.lefttitle && element?.righttitle;
+  
+  if (shouldUseMobileLayout) {
     return (
       <Container>
         <Button variant="link" href="#lefttitle">
