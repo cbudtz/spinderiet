@@ -40,15 +40,12 @@ export default function MarkDown({ children }) {
       
       const imgStyle = {
         height: "auto",
+        width: "100%", // Always use 100% width to allow scaling
       };
       
-      // Use maxWidth to set preferred size, but allow scaling down if container is smaller
-      // Don't set width directly - let maxWidth handle both scaling up and down
+      // Set maxWidth to the specified width, but width: 100% ensures it scales down if container is smaller
       if (hasValidWidth) {
-        imgStyle.maxWidth = `${Math.min(width, 100)}%`; // Use percentage, but cap at container size
-        // Also set a pixel max-width as fallback
-        imgStyle.width = "100%";
-        imgStyle.maxWidth = `${width}px`;
+        imgStyle.maxWidth = `${width}px`; // Max size, but can scale down due to width: 100%
       } else {
         imgStyle.maxWidth = "100%";
       }
