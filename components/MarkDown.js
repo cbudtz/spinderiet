@@ -1,5 +1,6 @@
-import React, { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { BASE_URL } from "../api/api";
 
 export default function MarkDown({ children }) {
@@ -23,9 +24,10 @@ export default function MarkDown({ children }) {
     }
   };
   
-  // useLayoutEffect runs synchronously before browser paint - ensures styles are set before render
+  // useEffect runs after render - ensures styles are set on client side
   // This handles cases where inline styles are stripped during SSR/build
-  useLayoutEffect(() => {
+  // Only runs on client (typeof window check inside applyImageStyles)
+  useEffect(() => {
     applyImageStyles();
     
     // Also run after a short delay to catch any late-rendered images
@@ -73,6 +75,20 @@ export default function MarkDown({ children }) {
   //     console.log(markdown);
   // }
   const components = {
+    // Handle iframes in markdown
+    iframe: ({ src, width, height, style, allowfullscreen, loading, ...props }) => {
+      return (
+        <iframe
+          src={src}
+          width={width}
+          height={height}
+          style={style}
+          allowFullScreen={allowfullscreen !== undefined}
+          loading={loading}
+          {...props}
+        />
+      );
+    },
     img: ({ alt, src, title, ...props }) => {
       // Parse dimensions from alt text format: "alt text=widthxheight"
       const altParts = alt?.split("=") || [];
@@ -131,7 +147,7 @@ export default function MarkDown({ children }) {
   };
   return (
     <div ref={containerRef}>
-      <ReactMarkdown components={components}>
+      <ReactMarkdown rehypePlugins={[rehypeRaw]} components={components}>
         {markdown}
       </ReactMarkdown>
     </div>

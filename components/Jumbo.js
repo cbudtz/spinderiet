@@ -1,6 +1,4 @@
-import { Jumbotron } from "react-bootstrap";
-import React, { useState } from "react";
-import MarkDown from "./MarkDown";
+import { useState } from "react";
 import { getStrapiMedia } from "../api/api";
 import { resolveImage, useWindow } from "../api/window";
 
@@ -14,8 +12,8 @@ export default function Jumbo({ images, text }) {
     return <></>;
   }
   return (
-    <Jumbotron
-      fluid
+    <div
+      className="bg-light rounded p-5 mb-4"
       style={{
         width: "100%",
         paddingBottom: windowWidth > 800 ? "40%" : "60%",

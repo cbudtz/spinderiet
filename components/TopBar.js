@@ -3,10 +3,10 @@ import React from "react";
 
 export default function TopBar({element}){
     return <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">Lægerne i Spinderiet</Navbar.Brand>
+        <Navbar.Brand href="/" style={{ marginLeft: '1rem' }}>Lægerne i Spinderiet</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
+            <Nav className="me-auto">
                 <Nav.Link href="/laegerne">Lægerne</Nav.Link>
                 <Nav.Link href="/personale">Personale</Nav.Link>
                 <NavDropdown title="Praktisk information" id="basic-nav-dropdown">
