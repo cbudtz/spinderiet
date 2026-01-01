@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import { useWindow } from "../api/window";
 
 export default function Cols2({ element }) {
-  const colStyle = { overflowWrap: "break-word" };
+  const colStyle = { 
+    overflowWrap: "break-word",
+    padding: "0 15px",
+    overflow: "hidden"
+  };
   const [windowWidth, setWindowWidth] = useState(() => {
     // Initialize with a value that matches server-side rendering
     if (typeof window !== "undefined") {

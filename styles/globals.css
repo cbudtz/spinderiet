@@ -1,7 +1,7 @@
 html {
   scroll-behavior: smooth;
 }
-,
+
 body {
   padding: 0;
   margin: 0;
@@ -16,4 +16,28 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/* Prevent text and image overlap in column layouts */
+.container .row .col img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container .row .col {
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+/* Ensure images don't break out of their containers */
+.container .row .col span[style*="display: block"] {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.container .row .col span[style*="display: block"] img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
 }

@@ -49,16 +49,16 @@ export default function MarkDown({ children }) {
         imgStyle.height = height;
       }
       
-      // For large images, add negative margin to break out of container
+      // For large images, use block display but don't break out of container
       // Use span with display: block instead of div to avoid nesting issues in <p> tags
       if (isLargeImage) {
         return (
-          <span style={{ display: "block", margin: "0 -15px 0px -15px" }}>
+          <span style={{ display: "block", width: "100%", maxWidth: "100%" }}>
             <img
               alt={altText}
               src={src}
               title={title}
-              style={imgStyle}
+              style={{ ...imgStyle, width: "100%", maxWidth: "100%", height: "auto" }}
             />
           </span>
         );
