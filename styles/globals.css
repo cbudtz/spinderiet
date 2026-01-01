@@ -30,7 +30,8 @@ a {
   max-width: 100%;
 }
 
-/* Base image styles for all images in column layouts */
+/* Base image styles for all images in column layouts - match all Bootstrap column classes */
+.container .row [class*="col-"] img,
 .container .row .col img {
   display: block;
   height: auto;
@@ -39,25 +40,74 @@ a {
 }
 
 /* CSS-based solution: Target images by alt attribute pattern (works during SSR) */
-/* Images with alt ending in =300 */
-.container .row .col img[alt$="=300"],
-.container .row .col img[alt*="=300"] {
+/* CRITICAL: These rules MUST be included in build - test with visible border first if needed */
+/* Universal selector - matches any img with alt containing =300 anywhere in the page */
+img[alt*="=300"],
+img[alt$="=300"],
+img[alt*=".jpg=300"],
+img[alt*=".png=300"],
+img[alt*=".svg=300"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 300px !important;
+  display: block !important;
+}
+
+/* More specific selectors for column layouts - multiple paths to ensure match */
+.container .row [class*="col-"] img[alt*="=300"],
+.container .row .col img[alt*="=300"],
+.container .row [class*="col-"] p img[alt*="=300"],
+.container .row .col p img[alt*="=300"],
+.container .row [class*="col-"] div img[alt*="=300"],
+.container .row .col div img[alt*="=300"] {
   height: auto !important;
   width: 100% !important;
   max-width: 300px !important;
 }
 
-/* Images with alt ending in =400 */
-.container .row .col img[alt$="=400"],
-.container .row .col img[alt*="=400"] {
+/* Universal selector for =400 */
+img[alt*="=400"],
+img[alt$="=400"],
+img[alt*=".jpg=400"],
+img[alt*=".png=400"],
+img[alt*=".svg=400"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  display: block !important;
+}
+
+/* Images with alt containing =400 */
+.container .row [class*="col-"] img[alt*="=400"],
+.container .row .col img[alt*="=400"],
+.container .row [class*="col-"] p img[alt*="=400"],
+.container .row .col p img[alt*="=400"],
+.container .row [class*="col-"] div img[alt*="=400"],
+.container .row .col div img[alt*="=400"] {
   height: auto !important;
   width: 100% !important;
   max-width: 400px !important;
 }
 
-/* Images with alt ending in =500 */
-.container .row .col img[alt$="=500"],
-.container .row .col img[alt*="=500"] {
+/* Universal selector for =500 */
+img[alt*="=500"],
+img[alt$="=500"],
+img[alt*=".jpg=500"],
+img[alt*=".png=500"],
+img[alt*=".svg=500"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 500px !important;
+  display: block !important;
+}
+
+/* Images with alt containing =500 */
+.container .row [class*="col-"] img[alt*="=500"],
+.container .row .col img[alt*="=500"],
+.container .row [class*="col-"] p img[alt*="=500"],
+.container .row .col p img[alt*="=500"],
+.container .row [class*="col-"] div img[alt*="=500"],
+.container .row .col div img[alt*="=500"] {
   height: auto !important;
   width: 100% !important;
   max-width: 500px !important;
