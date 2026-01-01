@@ -6,53 +6,79 @@ export default function MarkDown({ children }) {
   if (!children) {
     children = "";
   }
-  let markdown =
-    children.replaceAll &&
-    children.replaceAll("(/uploads/", "(" + BASE_URL + "uploads/");
+  // Ensure markdown is always a string to avoid hydration issues
+  let markdown = String(children);
+  // Replace <br> tags with line breaks (two spaces + newline for markdown line breaks)
+  // This handles both <br> and <br/> tags, case-insensitive
+  markdown = markdown.replace(/<br\s*\/?>/gi, "  \n");
+  
+  if (typeof markdown.replaceAll === "function") {
+    markdown = markdown.replaceAll("(/uploads/", "(" + BASE_URL + "uploads/");
+  } else {
+    // Fallback for environments without replaceAll (older Node.js)
+    markdown = markdown.replace(/\(\/uploads\//g, "(" + BASE_URL + "uploads/");
+  }
   // if (markdown) {
   //     markdown = markdown.replaceAll("\n\n", "{x}");
   //     markdown = markdown.replaceAll("\n", "\xa0\xa0\n");
   //     markdown = markdown.replaceAll("{x}", "\n\n");
   //     console.log(markdown);
   // }
-  const renderer = {
-    image: ({ alt, src, title }) => {
-      const width = Number(alt.split("=")[1]?.split("x")[0]);
-      const height = Number(alt.split("=")[1]?.split("x")[1]);
-      if (!width || width > 500) {
+  const components = {
+    img: ({ alt, src, title }) => {
+      // Parse dimensions from alt text format: "alt text=widthxheight"
+      const altParts = alt?.split("=") || [];
+      const altText = altParts[0] || alt || "";
+      const dimensions = altParts[1]?.split("x") || [];
+      const width = dimensions[0] ? Number(dimensions[0]) : NaN;
+      const height = dimensions[1] ? Number(dimensions[1]) : NaN;
+      
+      // Only use width/height if they are valid numbers
+      const hasValidWidth = !isNaN(width) && width > 0;
+      const hasValidHeight = !isNaN(height) && height > 0;
+      const isLargeImage = hasValidWidth && width > 500;
+      
+      const imgStyle = {
+        maxWidth: "100%",
+      };
+      
+      if (hasValidWidth) {
+        imgStyle.width = width;
+      }
+      if (hasValidHeight) {
+        imgStyle.height = height;
+      }
+      
+      // For large images, add negative margin to break out of container
+      // Use span with display: block instead of div to avoid nesting issues in <p> tags
+      if (isLargeImage) {
         return (
-          <div style={{ margin: "0 -15px 0px -15px" }}>
+          <span style={{ display: "block", margin: "0 -15px 0px -15px" }}>
             <img
-              alt={alt.split("=")[0]}
+              alt={altText}
               src={src}
               title={title}
-              style={{
-                maxWidth: "100%",
-                width: width,
-                height: height,
-              }}
+              style={imgStyle}
             />
-          </div>
+          </span>
         );
       }
+      
+      // For smaller images, use inline span
       return (
         <span>
           <img
-            alt={alt.split("=")[0]}
+            alt={altText}
             src={src}
             title={title}
-            style={{
-              maxWidth: "100%",
-              width: width,
-              height: height,
-            }}
+            style={imgStyle}
           />
         </span>
       );
     },
   };
   return (
-    <ReactMarkdown renderers={renderer} allowDangerousHtml>
+    <ReactMarkdown components={components}>
       {markdown}
     </ReactMarkdown>
   );

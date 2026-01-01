@@ -22,9 +22,9 @@ export default function PageContent({contents: array}){
                     return <Fullwidth key={key} element={element}/>
                 } else if (componentType==="table"){
                     console.log (JSON.stringify(element));
-                    return <CMSTable element={element}/>
+                    return <CMSTable key={key} element={element}/>
                 } else {
-                    return <p>test</p>
+                    return <p key={key}>test</p>
                 }
             })}
         </>
