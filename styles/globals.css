@@ -30,7 +30,7 @@ a {
   max-width: 100%;
 }
 
-/* Base image styles - don't override width/maxWidth from component */
+/* Base image styles for all images in column layouts */
 .container .row .col img {
   display: block;
   height: auto;
@@ -38,15 +38,39 @@ a {
   width: 100%;
 }
 
-/* Fallback: Use data-width attribute if inline styles are stripped during build */
-/* This CSS works during SSR and provides base styles */
+/* CSS-based solution: Target images by alt attribute pattern (works during SSR) */
+/* Images with alt ending in =300 */
+.container .row .col img[alt$="=300"],
+.container .row .col img[alt*="=300"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 300px !important;
+}
+
+/* Images with alt ending in =400 */
+.container .row .col img[alt$="=400"],
+.container .row .col img[alt*="=400"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 400px !important;
+}
+
+/* Images with alt ending in =500 */
+.container .row .col img[alt$="=500"],
+.container .row .col img[alt*="=500"] {
+  height: auto !important;
+  width: 100% !important;
+  max-width: 500px !important;
+}
+
+/* Fallback: Use data-width attribute if present */
 .container .row .col img[data-width] {
   height: auto !important;
   width: 100% !important;
   max-width: 100% !important;
 }
 
-/* Specific widths - add more as needed */
+/* Specific widths via data-width - add more as needed */
 .container .row .col img[data-width="300"] {
   max-width: 300px !important;
 }
@@ -57,11 +81,6 @@ a {
 
 .container .row .col img[data-width="500"] {
   max-width: 500px !important;
-}
-
-/* Generic fallback using CSS custom properties - set via JavaScript */
-.container .row .col img[data-width] {
-  max-width: var(--img-max-width, 100%);
 }
 
 /* Ensure Bootstrap columns work correctly */
