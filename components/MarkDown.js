@@ -39,14 +39,20 @@ export default function MarkDown({ children }) {
       const isLargeImage = hasValidWidth && width > 500;
       
       const imgStyle = {
-        maxWidth: "100%",
         height: "auto",
       };
       
-      // Only set width if it's valid, but maxWidth: 100% will ensure it scales down if needed
+      // Use maxWidth to set preferred size, but allow scaling down if container is smaller
+      // Don't set width directly - let maxWidth handle both scaling up and down
       if (hasValidWidth) {
-        imgStyle.width = `${width}px`;
+        imgStyle.maxWidth = `${Math.min(width, 100)}%`; // Use percentage, but cap at container size
+        // Also set a pixel max-width as fallback
+        imgStyle.width = "100%";
+        imgStyle.maxWidth = `${width}px`;
+      } else {
+        imgStyle.maxWidth = "100%";
       }
+      
       if (hasValidHeight && !hasValidWidth) {
         // Only set height if width wasn't set, to maintain aspect ratio
         imgStyle.height = `${height}px`;

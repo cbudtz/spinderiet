@@ -27,16 +27,30 @@ a {
 
 .container .row .col {
   word-wrap: break-word;
+  min-width: 0; /* Allow flex items to shrink below content size */
 }
 
 /* Ensure images don't break out of their containers but aren't clipped */
-.container .row .col span[style*="display: block"] {
+.container .row .col span[style*="display: block"],
+.container .row .col span[style*="display: inline-block"] {
   max-width: 100%;
-  display: block;
 }
 
-.container .row .col span[style*="display: block"] img {
-  max-width: 100%;
-  height: auto;
-  width: auto;
+.container .row .col span[style*="display: block"] img,
+.container .row .col span[style*="display: inline-block"] img {
+  max-width: 100% !important;
+  height: auto !important;
+  width: 100%;
+  object-fit: contain;
+}
+
+/* Ensure Bootstrap columns work correctly */
+.container .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.container .row > [class*="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
 }
