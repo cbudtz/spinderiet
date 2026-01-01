@@ -35,6 +35,17 @@ a {
   display: block;
   height: auto;
   object-fit: contain;
+  width: 100%;
+}
+
+/* Fallback: Use data-width attribute if inline styles are stripped during build */
+.container .row .col img[data-width] {
+  width: 100%;
+  max-width: 100%;
+}
+
+.container .row .col img[data-width="300"] {
+  max-width: 300px;
 }
 
 /* Ensure Bootstrap columns work correctly */

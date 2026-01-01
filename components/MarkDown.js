@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { BASE_URL } from "../api/api";
 
@@ -25,7 +25,7 @@ export default function MarkDown({ children }) {
   //     console.log(markdown);
   // }
   const components = {
-    img: ({ alt, src, title }) => {
+    img: ({ alt, src, title, ...props }) => {
       // Parse dimensions from alt text format: "alt text=widthxheight"
       const altParts = alt?.split("=") || [];
       const altText = altParts[0] || alt || "";
@@ -38,49 +38,69 @@ export default function MarkDown({ children }) {
       const hasValidHeight = !isNaN(height) && height > 0;
       const isLargeImage = hasValidWidth && width > 500;
       
+      // Create style object - ensure all properties are explicitly set
       const imgStyle = {
         height: "auto",
-        width: "100%", // Always use 100% to allow scaling down
+        width: "100%",
       };
       
-      // Set maxWidth to limit maximum size, but width: 100% ensures it scales down if container is smaller
       if (hasValidWidth) {
-        imgStyle.maxWidth = `${width}px`; // Max size, but can scale down due to width: 100%
+        imgStyle.maxWidth = `${width}px`;
       } else {
         imgStyle.maxWidth = "100%";
       }
       
-      if (hasValidHeight && !hasValidWidth) {
-        // Only set height if width wasn't set, to maintain aspect ratio
-        imgStyle.height = `${height}px`;
-      }
-      
-      // For large images, use block display
-      // Use span with display: block instead of div to avoid nesting issues in <p> tags
-      if (isLargeImage) {
+      // Image component with ref to set styles after render if needed
+      const ImageWithStyle = () => {
+        const imgRef = useRef(null);
+        
+        useEffect(() => {
+          if (imgRef.current) {
+            // Ensure styles are applied even if they were stripped
+            imgRef.current.style.height = "auto";
+            imgRef.current.style.width = "100%";
+            if (hasValidWidth) {
+              imgRef.current.style.maxWidth = `${width}px`;
+            } else {
+              imgRef.current.style.maxWidth = "100%";
+            }
+          }
+        }, [hasValidWidth, width]);
+        
+        // For large images, use block display
+        if (isLargeImage) {
+          return (
+            <span style={{ display: "block" }}>
+              <img
+                {...props}
+                ref={imgRef}
+                alt={altText}
+                src={src}
+                title={title}
+                style={imgStyle}
+                data-width={hasValidWidth ? width : undefined}
+              />
+            </span>
+          );
+        }
+        
+        // For smaller images, use inline span
         return (
-          <span style={{ display: "block" }}>
+          <span style={{ display: "inline-block" }}>
             <img
+              {...props}
+              ref={imgRef}
               alt={altText}
               src={src}
               title={title}
               style={imgStyle}
+              data-width={hasValidWidth ? width : undefined}
             />
           </span>
         );
-      }
+      };
       
-      // For smaller images, use inline span
-      return (
-        <span style={{ display: "inline-block" }}>
-          <img
-            alt={altText}
-            src={src}
-            title={title}
-            style={imgStyle}
-          />
-        </span>
-      );
+      return <ImageWithStyle />;
     },
   };
   return (
