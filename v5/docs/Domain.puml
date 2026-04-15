@@ -1,0 +1,178 @@
+' Domain model — Lægerne i Spinderiet v5
+' Aligned with docs/Scope.md, docs/Requirements.md
+' Persistence: HTML + JSON component config in DB (cf. legacy Strapi dynamic zone + fields)
+' Media: files in upload folder on Node server
+
+@startuml spinderiet-v5-domain
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+left to right direction
+
+title Domain — Lægerne i Spinderiet (v5)
+
+package "Persisted public content" as content {
+  class SitePage <<aggregate root>> {
+    + id
+    + slug : string
+    + title : string
+    + metaTitle : string?
+    --
+    IA: frontpage, laegerne, personale, om,\nspeciallaeger, priserpatient, vagtring,\noevelser, priserattester, problemer;\nextensible slugs
+  }
+
+  class PageBlockInstance <<entity>> {
+    + id
+    + position : int
+    + blockTypeKey : string
+    + componentConfig : Json
+    + bodyHtml : string?
+    --
+    **Single row per block on page.**
+    **componentConfig**: structured props for the\nSvelte renderer (flags, titles, media ids,\ntable options, column emphasis, …).\n**bodyHtml**: optional main WYSIWYG output;\nmulti-region blocks may instead keep named\nHTML fragments inside **componentConfig**\n(e.g. leftHtml / rightHtml) per block schema.
+    --
+    **Raw HTML** allowed in stored fields\n(legacy parity); render via trusted pipeline\n+ documented sanitization/allowlist policy.
+    --
+    Same idea as legacy Strapi **__component**\n+ typed fields; here: type key + JSON + HTML.
+  }
+
+  SitePage "1" *-- "0..*" PageBlockInstance : ordered blocks
+}
+
+package "Block type catalog (schemas, not separate tables)" as catalog {
+  note as B1
+    **Registered blockTypeKey** values define
+    allowed keys in **componentConfig** and
+    whether content lives in **bodyHtml** or
+    embedded HTML fields in config.
+
+    Examples (legacy parity):
+    • **hero** / jumbotron — image ids, crop, optional caption
+    • **col2** — leftTitle, rightTitle, emphasis, leftHtml, rightHtml
+    • **fullwidth** — bodyHtml or single html in config
+    • **table** — striped, compact, header/body as html or legacy delimited strings in config
+
+    Public **renderers** map (blockTypeKey + payload) → Svelte.
+  end note
+}
+
+PageBlockInstance .. catalog : conforms to
+
+package "Media (Node server disk)" as media {
+  class MediaAsset <<entity>> {
+    + id
+    + relativePath : string
+    + mimeType : string
+    + byteSize : int?
+    + variants : MediaVariant
+    --
+    Files live under a configurable **upload/**
+    directory on the **adapter-node** host;\nserved via static file route or reverse proxy.\n**No** object storage in v1.
+  }
+
+  class MediaVariant <<value object>> {
+    + role : string
+    + relativePath : string
+    + maxWidth : int?
+    --
+    optional derived files\n(responsive widths, thumbs)
+  }
+
+  MediaAsset *-- "0..*" MediaVariant
+}
+
+PageBlockInstance ..> MediaAsset : references by id\nin componentConfig
+
+package "Navigation — menu config (TopBar)" as nav {
+  class MenuConfig <<aggregate root>> {
+    + id
+    --
+    Typically **singleton** per site;\npersisted menu tree for TopBar.
+  }
+
+  class NavMenuItem <<entity>> {
+    + id
+    + label : string
+    + href : string
+    + parentId : uuid?
+    + sortOrder : int
+    --
+    **href**: public path (e.g. /om, /laegerne).\n**parentId**: null = top level;\nnon-null = dropdown group\n(legacy: Praktisk information).
+  }
+
+  MenuConfig "1" *-- "1..*" NavMenuItem : items
+}
+
+package "Frontpage routing" as fp {
+  class FrontpageRouteConfig <<entity>> {
+    + id
+    + orderedSourceSlugs : string[]
+    --
+    Default **["frontpage"]**.\nPublic **/** loads **SitePage**\nrows by these slugs **in order**\nand **concatenates** their\n**PageBlockInstance** lists.
+  }
+}
+
+FrontpageRouteConfig ..> SitePage : resolves by slug
+NavMenuItem ..> SitePage : links may target\npaths backed by slugs
+
+package "Staff authoring (two UI layers)" as staff {
+  actor StaffEditor
+
+  interface PageComposition <<boundary>> {
+    listRegisteredBlockTypes()
+    addBlock(pageId, blockTypeKey, afterPosition?)
+    removeBlock(instanceId)
+    reorderBlocks(pageId, orderedInstanceIds)
+    --
+    **Layer 1 — structure:** which blocks,\nin which order, on this page.
+  }
+
+  interface BlockContentEditing <<boundary>> {
+    loadBlock(instanceId)
+    saveBlockPayload(instanceId, componentConfig, bodyHtml?)
+    --
+    **Layer 2 — content:** WYSIWYG + prop UI\nfor the selected instance;\npersists HTML + config to **PageBlockInstance**.
+  }
+
+  StaffEditor -down- PageComposition
+  StaffEditor -down- BlockContentEditing
+  PageComposition .down.> SitePage : mutates layout
+  PageComposition .down.> PageBlockInstance : add/remove/reorder
+  BlockContentEditing .down.> PageBlockInstance : mutates payload
+}
+
+package "Identity (boundary)" as id {
+  note as I1
+    **Better Auth** — only staff may call\ncomposition + content editing operations.
+
+    **Bootstrap:** idempotent seed creates the\nfirst user from **ADMIN_USER** / **ADMIN_PASS**\n(env); no duplicate on re-run.
+  end note
+}
+
+StaffEditor .. id
+
+package "External systems" as external <<Rectangle>> {
+  class PatientPortalUrl <<boundary>> {
+    + bookingDeepLink : uri
+  }
+  class AnalyticsConfig <<boundary>> {
+    + umamiScriptUrl : uri
+    + websiteId : string
+  }
+}
+
+SitePage .. PatientPortalUrl : CTA
+
+note bottom of content
+  Forside parity = **FrontpageRouteConfig**
+  → one or more **SitePage** slugs
+  → merged **PageBlockInstance** lists
+  + raw HTML as required for legacy parity.
+  **Migration:** Strapi dynamic zones →
+  blockTypeKey + componentConfig + html fields.
+end note
+
+note right of external
+  **Excluded:** Strapi runtime, Noteless APIs.
+end note
+
+@enduml
